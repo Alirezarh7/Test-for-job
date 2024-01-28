@@ -1,32 +1,26 @@
 "use client";
 import React from "react";
-import FormData from "../../../Server-API/data.json";
 import { useState } from "react";
 import Link from "next/link";
 import { Manager } from "./Manager";
-import sendData from "@/app/API/contacts";
+import  Axios  from "../../app/API/contacts";
 
 const SignUp = () => {
-  const [formData, setFormData] = useState(FormData);
-  //const [signUp, setSignUp] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
+const [firstNamee, setFirstNamee] =useState("")
+const [lastName, setLastName] =useState("")
+const [phoneNumber, setPhoneNumber] =useState("")
+const [username, setUsername] =useState("")
   
-  const handleSubmit = async() => {
-    try {
-      await sendData(formData);
-      console.log(formData)
-      } catch (error) {
-        console.log('we have an error',error)
-        throw error
-      }
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    Axios.post('/contacts',{
+      firstNamee,
+      lastName,
+      phoneNumber,
+      username,
+    })
+    .catch((err)=>{console.log(err)})
     };
 
   return (
@@ -46,8 +40,8 @@ const SignUp = () => {
                   </label>
                   <input
                     type="text"
-                    name="first_name"
-                    onChange={handleChange}
+                    name="firstNamee"
+                    onChange={(e)=>setFirstNamee(e.target.value)}
                     key="first_name"
                     placeholder="Firstname"
                     className="outline-none bg-white pt-2 pb-2 rounded-xl w-full text-black"
@@ -59,9 +53,9 @@ const SignUp = () => {
                   </label>
                   <input
                     type="text"
-                    name="last_name"
+                    name="lastName"
                     key="last_name"
-                    onChange={handleChange}
+                    onChange={(e)=>setLastName(e.target.value)}
                     placeholder="Lastname"
                     className="outline-none bg-white pt-2 pb-2 rounded-xl w-full text-black"
                   />
@@ -72,9 +66,9 @@ const SignUp = () => {
                   </label>
                   <input
                     type="text"
-                    name="phone_number"
-                    key="phone_number"
-                    onChange={handleChange}
+                    name="phoneNumber"
+                    key="phoneNumber"
+                    onChange={(e)=>setPhoneNumber(e.target.value)}
                     placeholder="Phone number"
                     className="outline-none bg-white pt-2 pb-2 rounded-xl w-full text-black"
                   />
@@ -87,7 +81,7 @@ const SignUp = () => {
                     type="text"
                     name="username"
                     key="username"
-                    onChange={handleChange}
+                    onChange={(e)=>setUsername(e.target.value)}
                     placeholder="username"
                     className="outline-none bg-white pt-2 pb-2 rounded-xl w-full text-black"
                   />
